@@ -79,4 +79,12 @@ export class ProductService {
 
     return await this.productRepository.delete(id);
   }
+
+  async findProductByPlanId(planId: number) {
+    const product = await this.productRepository.findOne({
+      where: { plans: { id: planId } },
+    });
+
+    return product;
+  }
 }
