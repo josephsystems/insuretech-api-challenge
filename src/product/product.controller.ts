@@ -23,18 +23,18 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  async create(@Body() createProductDto: CreateProductDto) {
-    const product = await this.productService.create(createProductDto);
+  async createProduct(@Body() createProductDto: CreateProductDto) {
+    const product = await this.productService.createProduct(createProductDto);
 
     return {
-      message: 'Product ceated successfully',
+      message: 'Product created successfully',
       result: plainToClass(SerializedProduct, product),
     };
   }
 
   @Get()
-  async findAll(@Query() filterDto: FilterProductDto) {
-    const products = await this.productService.findAll(filterDto);
+  async findProducts(@Query() filterDto: FilterProductDto) {
+    const products = await this.productService.findProducts(filterDto);
 
     return {
       message: 'Successfully retrieved products',
@@ -43,8 +43,8 @@ export class ProductController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const product = await this.productService.findOne(id);
+  async findProduct(@Param('id') id: number) {
+    const product = await this.productService.findProduct(id);
 
     return {
       message: 'Product successfully retrieved',
@@ -53,11 +53,11 @@ export class ProductController {
   }
 
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
+  async updateProduct(
+    @Param('id') id: number,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    const updatedProduct = await this.productService.update(
+    const updatedProduct = await this.productService.updateProduct(
       id,
       updateProductDto,
     );
@@ -69,8 +69,8 @@ export class ProductController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    await this.productService.remove(id);
+  async deleteProduct(@Param('id') id: number) {
+    await this.productService.deleteProduct(id);
 
     return {
       message: 'Product deleted successfully',

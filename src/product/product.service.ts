@@ -14,14 +14,14 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  async createProduct(createProductDto: CreateProductDto) {
     createProductDto.price = Number(toKobo(createProductDto.price));
     const product = this.productRepository.create(createProductDto);
 
     return await this.productRepository.save(product);
   }
 
-  async findAll(filterDto?: FilterProductDto) {
+  async findProducts(filterDto?: FilterProductDto) {
     const queryBuilder = this.productRepository.createQueryBuilder('product');
 
     if (filterDto) {
@@ -47,7 +47,7 @@ export class ProductService {
     return await queryBuilder.getMany();
   }
 
-  async findOne(id: string) {
+  async findProduct(id: number) {
     const product = await this.productRepository.findOne({ where: { id } });
 
     if (!product) {
@@ -56,7 +56,7 @@ export class ProductService {
     return product;
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async updateProduct(id: number, updateProductDto: UpdateProductDto) {
     if (updateProductDto.price) {
       updateProductDto.price = Number(toKobo(updateProductDto.price));
     }
@@ -70,7 +70,7 @@ export class ProductService {
     return await this.productRepository.update(id, updateProductDto);
   }
 
-  async remove(id: string) {
+  async deleteProduct(id: number) {
     const product = await this.productRepository.findOne({ where: { id } });
 
     if (!product) {
