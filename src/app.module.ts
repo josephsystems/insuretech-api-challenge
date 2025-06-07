@@ -5,7 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
-
+import { PlanModule } from './plan/plan.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -14,6 +14,7 @@ import { UserModule } from './user/user.module';
     DatabaseModule,
     ProductModule,
     UserModule,
+    PlanModule,
   ],
   controllers: [AppController],
   providers: [AppService],
