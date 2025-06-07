@@ -1,6 +1,7 @@
 import { Plan } from '../../plan/entities/plan.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
+import { Policy } from '../../policy/entities/policy.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -18,4 +19,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Plan, (plan) => plan.user, { cascade: true })
   plans: Plan[];
+
+  @OneToMany(() => Policy, (policy) => policy.user, { cascade: true })
+  policies: Policy[];
 }
