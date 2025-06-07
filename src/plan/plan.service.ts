@@ -107,8 +107,8 @@ export class PlanService {
   }
 
   async getPlans(filterPlanDto: PlanDto) {
-    const { id, productId } = filterPlanDto;
-    const user = await this.userService.findUserById(id);
+    const { userId, productId } = filterPlanDto;
+    const user = await this.userService.findUserById(userId);
 
     const query = this.planRepository
       .createQueryBuilder('plan')
@@ -139,7 +139,7 @@ export class PlanService {
   }
 
   async getPlan(id: number, planDto: PlanDto) {
-    const { id: userId } = planDto;
+    const { userId } = planDto;
     const user = await this.userService.findUserById(userId);
 
     const plan = await this.findPlanById(id, [
@@ -153,18 +153,5 @@ export class PlanService {
     }
 
     return plan;
-  }
-
-  async deletePlan(id: number, planDto: PlanDto) {
-    const { id: userId } = planDto;
-    const user = await this.userService.findUserById(userId);
-
-    const plan = await this.findPlanById(id);
-
-    if (plan.user.email !== user.email) {
-      throw new BadRequestException('Plan does not belong to user');
-    }
-
-    return await this.planRepository.remove(plan);
   }
 }
