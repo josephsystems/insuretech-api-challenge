@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Policy } from './entities/policy.entity';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from '../user/user.module';
 import { PolicyService } from './policy.service';
 import { PolicyController } from './policy.controller';
 

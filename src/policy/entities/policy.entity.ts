@@ -1,8 +1,8 @@
-import { Product } from 'src/product/entities/product.entity';
+import { Product } from '../../product/entities/product.entity';
 import { BaseEntity } from '../../shared/entities/base.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
-import { PendingPolicy } from 'src/pending-policy/entities/pending-policy.entity';
+import { PendingPolicy } from '../../pending-policy/entities/pending-policy.entity';
 
 @Entity('policies')
 export class Policy extends BaseEntity {
