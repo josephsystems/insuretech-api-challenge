@@ -1,5 +1,6 @@
 import { Expose, Transform } from 'class-transformer';
 import { SerializedProduct } from './product.serializer';
+import { SerializedUser } from './user.serializer';
 
 export class SerializedPolicy {
   @Expose()
@@ -14,7 +15,11 @@ export class SerializedPolicy {
   @Expose()
   beneficiaryEmail: string;
 
-  @Transform(({ obj }) => obj.product || (obj.plan && obj.plan.product))
+  @Transform(({ obj }) => obj.product)
   @Expose()
   product: SerializedProduct;
+
+  @Transform(({ obj }) => obj.user)
+  @Expose()
+  user: SerializedUser;
 }
