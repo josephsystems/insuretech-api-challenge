@@ -1,4 +1,4 @@
-import { Plan } from 'src/plan/entities/plan.entity';
+import { Plan } from '../../plan/entities/plan.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { PendingPolicyStatus } from '../enums';
 import { BaseEntity } from '../../shared/entities/base.entity';
@@ -13,5 +13,5 @@ export class PendingPolicy extends BaseEntity {
     enum: PendingPolicyStatus,
     default: PendingPolicyStatus.UNUSED,
   })
-  status: PendingPolicyStatus;
+  status: PendingPolicyStatus = PendingPolicyStatus.UNUSED;
 }

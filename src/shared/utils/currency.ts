@@ -1,4 +1,4 @@
-import { KOBO } from 'src/product/constant';
+import { KOBO } from '../../product/constant';
 
 export const toKobo = (amount: number) => amount * KOBO;
 

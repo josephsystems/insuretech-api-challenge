@@ -7,7 +7,7 @@ import { FilterPolicyDto } from './dto/filter-policy.dto';
 import { Repository } from 'typeorm';
 import { Policy } from './entities/policy.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class PolicyService {

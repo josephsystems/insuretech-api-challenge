@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Currency, ProductCategory } from '../enum';
 import { BaseEntity } from '../../shared/entities/base.entity';
-import { Plan } from 'src/plan/entities/plan.entity';
+import { Plan } from '../../plan/entities/plan.entity';
 
 @Entity('products')
 export class Product extends BaseEntity {

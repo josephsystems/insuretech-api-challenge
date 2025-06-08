@@ -15,7 +15,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FilterProductDto } from './dto/filter-product.dto';
 import { plainToClass } from 'class-transformer';
-import { SerializedProduct } from 'src/shared/serializers/product.serializer';
+import { SerializedProduct } from '../shared/serializers/product.serializer';
 
 @Controller('products')
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))

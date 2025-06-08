@@ -202,6 +202,17 @@ export class PendingPolicyService {
       ) {
         throw error;
       }
+      // Check for the specific error message from concurrent modifications
+      if (
+        error.message &&
+        error.message.includes(
+          'PendingPolicy already updated by another transaction',
+        )
+      ) {
+        throw new BadRequestException(
+          'This pending policy is being processed by another request. Please try again.',
+        );
+      }
       console.error(error);
       throw new InternalServerErrorException(
         `An unexpected error occurred: ${error.message}`,
