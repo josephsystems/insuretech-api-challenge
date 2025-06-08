@@ -1,99 +1,574 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Insuretech API Challenge
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a NestJS-based API that allows users to buy insurance plans and activate policies.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Project Setup
 
-## Description
+### Environment Variables
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Create a `.env` file in the root directory with the following variables:
 
-## Project setup
-
-```bash
-$ npm install
+```
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_password
+POSTGRES_DB=insuretech_db
+PORT=3000
 ```
 
-## Compile and run the project
+### Database Setup
+
+This project uses PostgreSQL as its database. Make sure you have PostgreSQL installed and running on your system.
+
+1. Create a new PostgreSQL database with the name specified in your environment variables (`POSTGRES_DB`).
+2. The application will automatically create the necessary tables when it first runs, thanks to TypeORM's synchronization feature.
+
+### Seeder
+
+The project includes a seeder that creates default users with wallets and insurance products:
+
+- **Users**: Two default users are created with wallets:
+  - John Doe (john.doe@example.com) with 10,000 NGN (1,000,000 Kobo)
+  - Jane Smith (jane.smith@example.com) with 20,000 NGN (2,000,000 Kobo)
+
+- **Products**: Four default insurance products are created:
+  - Optimal care mini (Health) - 10,000 NGN (1,000,000 Kobo)
+  - Optimal care standard (Health) - 20,000 NGN (2,000,000 Kobo)
+  - Third-party Auto Insurance - 5,000 NGN (500,000 Kobo)
+  - Comprehensive Auto Insurance - 15,000 NGN (1,500,000 Kobo)
+
+## Project Startup
+
+### Install Dependencies
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
+# or
+yarn install
 ```
 
-## Run tests
+### Run the Application
+
+Development mode:
+```bash
+npm run start:dev
+# or
+yarn start:dev
+```
+
+
+### Run the Seeder
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run seed
+# or
+yarn seed
 ```
 
-## Deployment
+### Database Synchronization
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+The application uses TypeORM's `synchronize: true` setting, which means database tables are automatically created/altered based on entity definitions. In production, this should be set to `false` and proper migrations should be used.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Authentication
 
-```bash
-$ npm install -g mau
-$ mau deploy
+As per the requirements, this API does not implement authentication. Instead, it uses a `userId` query parameter to identify users when required.
+
+### Default Users
+
+The seeder creates two default users:
+
+1. **John Doe**
+   - ID: 1
+   - Email: john.doe@example.com
+   - Wallet: 10,000 NGN (1,000,000 Kobo)
+
+2. **Jane Smith**
+   - ID: 2
+   - Email: jane.smith@example.com
+   - Wallet: 20,000 NGN (2,000,000 Kobo)
+
+> Note: Wallet values are stored in Kobo (100 Kobo = 1 Naira)
+
+## API Documentation
+
+All endpoints are prefixed with `/api/v1`.
+
+### Products API
+
+#### List all insurance products
+
+```
+GET /api/v1/products
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Query Parameters:
+- `category` (optional): Filter by product category (HEALTH, AUTO, etc.)
+- `minPrice` (optional): Minimum price in NGN
+- `maxPrice` (optional): Maximum price in NGN
 
-## Resources
+Response:
+```json
+{
+  "message": "Successfully retrieved products",
+  "result": [
+    {
+      "id": 1,
+      "name": "Optimal care mini",
+      "description": "",
+      "price": 10000,
+      "currency": "NGN",
+      "category": "HEALTH",
+      "createdAt": "2023-08-01T10:00:00.000Z",
+      "updatedAt": "2023-08-01T10:00:00.000Z"
+    },
+    // ...more products
+  ]
+}
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+#### Get a specific product
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```
+GET /api/v1/products/:id
+```
 
-## Support
+Response:
+```json
+{
+  "message": "Product successfully retrieved",
+  "result": {
+    "id": 1,
+    "name": "Optimal care mini",
+    "description": "",
+    "price": 10000,
+    "currency": "NGN",
+    "category": "HEALTH",
+    "createdAt": "2023-08-01T10:00:00.000Z",
+    "updatedAt": "2023-08-01T10:00:00.000Z"
+  }
+}
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Plans API
 
-## Stay in touch
+#### Purchase a new insurance plan
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+POST /api/v1/plans
+```
 
-## License
+Query Parameters:
+- `userId` (required): ID of the user purchasing the plan
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Request Body:
+```json
+{
+  "productId": 1,
+  "quantity": 1
+}
+```
+
+Response:
+```json
+{
+    "message": "Plan created successfully",
+    "result": {
+        "id": 1,
+        "createdAt": "2025-06-08T16:56:29.902Z",
+        "updatedAt": "2025-06-08T16:56:29.902Z",
+        "quantity": 1,
+        "product": {
+            "id": 1,
+            "createdAt": "2025-06-08T16:47:13.242Z",
+            "updatedAt": "2025-06-08T16:47:13.242Z",
+            "category": "health",
+            "name": "Optimal care mini",
+            "price": "10000.00",
+            "description": "",
+            "currency": "NGN",
+            "priceKobo": 1000000
+        },
+        "user": {
+            "id": 1,
+            "createdAt": "2025-06-08T16:47:13.225Z",
+            "updatedAt": "2025-06-08T16:56:29.902Z",
+            "email": "john.doe@example.com",
+            "firstName": "John",
+            "lastName": "Doe",
+            "wallet": 0
+        },
+        "pendingPolicies": [
+            {
+                "id": 1,
+                "createdAt": "2025-06-08T16:56:29.902Z",
+                "updatedAt": "2025-06-08T16:56:29.902Z",
+                "status": "unused"
+            }
+        ],
+        "totalPrice": "10000.00",
+        "totalPriceKobo": 1000000
+    }
+}
+```
+
+#### List all plans for a user
+
+```
+GET /api/v1/plans
+```
+
+Query Parameters:
+- `userId` (required): ID of the user
+
+Response:
+```json
+{
+    "message": "Plans fetched successfully",
+    "result": [
+        {
+            "id": 7,
+            "createdAt": "2025-06-08T16:56:29.902Z",
+            "updatedAt": "2025-06-08T16:56:29.902Z",
+            "quantity": 1,
+            "product": {
+                "id": 13,
+                "createdAt": "2025-06-08T16:47:13.242Z",
+                "updatedAt": "2025-06-08T16:47:13.242Z",
+                "category": "health",
+                "name": "Optimal care mini",
+                "price": "10000.00",
+                "description": "",
+                "currency": "NGN",
+                "priceKobo": 1000000
+            },
+            "user": {
+                "id": 5,
+                "createdAt": "2025-06-08T16:47:13.225Z",
+                "updatedAt": "2025-06-08T16:56:29.902Z",
+                "email": "john.doe@example.com",
+                "firstName": "John",
+                "lastName": "Doe",
+                "wallet": 0
+            },
+            "pendingPolicies": [
+                {
+                    "id": 7,
+                    "createdAt": "2025-06-08T16:56:29.902Z",
+                    "updatedAt": "2025-06-08T16:56:29.902Z",
+                    "status": "unused"
+                }
+            ],
+            "totalPrice": "10000.00",
+            "totalPriceKobo": 1000000
+        }
+      // ..more plans
+    ]
+}
+```
+
+#### Get details of a specific plan
+
+```
+GET /api/v1/plans/:id
+```
+
+Query Parameters:
+- `userId` (required): ID of the user
+
+Response:
+```json
+{
+    "message": "Plan retrieved successfully",
+    "result": {
+        "id": 1,
+        "createdAt": "2025-06-08T16:56:29.902Z",
+        "updatedAt": "2025-06-08T16:56:29.902Z",
+        "quantity": 1,
+        "product": {
+            "id": 1,
+            "createdAt": "2025-06-08T16:47:13.242Z",
+            "updatedAt": "2025-06-08T16:47:13.242Z",
+            "category": "health",
+            "name": "Optimal care mini",
+            "price": "10000.00",
+            "description": "",
+            "currency": "NGN",
+            "priceKobo": 1000000
+        },
+        "user": {
+            "id": 1,
+            "createdAt": "2025-06-08T16:47:13.225Z",
+            "updatedAt": "2025-06-08T16:56:29.902Z",
+            "email": "john.doe@example.com",
+            "firstName": "John",
+            "lastName": "Doe",
+            "wallet": 0
+        },
+        "pendingPolicies": [
+            {
+                "id": 1,
+                "createdAt": "2025-06-08T16:56:29.902Z",
+                "updatedAt": "2025-06-08T16:56:29.902Z",
+                "status": "unused"
+            }
+        ],
+        "totalPrice": "10000.00",
+        "totalPriceKobo": 1000000
+    }
+}
+```
+
+### Pending Policies API
+
+#### List all pending policies for a user
+
+```
+GET /api/v1/pending-policies
+```
+
+Query Parameters:
+- `userId` (required): ID of the user
+
+Response:
+```json
+{
+    "message": "Pending policies fetched successfully",
+    "result": [
+        {
+            "id": 1,
+            "createdAt": "2025-06-08T16:56:29.902Z",
+            "updatedAt": "2025-06-08T16:56:29.902Z",
+            "status": "unused",
+            "plan": {
+                "id": 7,
+                "createdAt": "2025-06-08T16:56:29.902Z",
+                "updatedAt": "2025-06-08T16:56:29.902Z",
+                "quantity": 1,
+                "product": {
+                    "id": 13,
+                    "createdAt": "2025-06-08T16:47:13.242Z",
+                    "updatedAt": "2025-06-08T16:47:13.242Z",
+                    "category": "health",
+                    "name": "Optimal care mini",
+                    "price": 1000000,
+                    "description": "",
+                    "currency": "NGN"
+                },
+                "user": {
+                    "id": 5,
+                    "createdAt": "2025-06-08T16:47:13.225Z",
+                    "updatedAt": "2025-06-08T16:56:29.902Z",
+                    "email": "john.doe@example.com",
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "wallet": 0
+                }
+            }
+        }
+    ]
+}
+```
+
+#### Get details of a specific pending policy
+
+```
+GET /api/v1/pending-policies/:id
+```
+
+Query Parameters:
+- `userId` (required): ID of the user
+
+Response:
+```json
+{
+    "message": "Pending policy fetched successfully",
+    "result": {
+        "id": 7,
+        "createdAt": "2025-06-08T16:56:29.902Z",
+        "updatedAt": "2025-06-08T16:56:29.902Z",
+        "status": "unused",
+        "plan": {
+            "id": 7,
+            "createdAt": "2025-06-08T16:56:29.902Z",
+            "updatedAt": "2025-06-08T16:56:29.902Z",
+            "quantity": 1,
+            "product": {
+                "id": 13,
+                "createdAt": "2025-06-08T16:47:13.242Z",
+                "updatedAt": "2025-06-08T16:47:13.242Z",
+                "category": "health",
+                "name": "Optimal care mini",
+                "price": 1000000,
+                "description": "",
+                "currency": "NGN"
+            },
+            "user": {
+                "id": 5,
+                "createdAt": "2025-06-08T16:47:13.225Z",
+                "updatedAt": "2025-06-08T16:56:29.902Z",
+                "email": "john.doe@example.com",
+                "firstName": "John",
+                "lastName": "Doe",
+                "wallet": 0
+            }
+        },
+        "product": {
+            "id": 13,
+            "createdAt": "2025-06-08T16:47:13.242Z",
+            "updatedAt": "2025-06-08T16:47:13.242Z",
+            "category": "health",
+            "name": "Optimal care mini",
+            "price": 1000000,
+            "description": "",
+            "currency": "NGN"
+        }
+    }
+}
+```
+
+#### Activate a pending policy
+
+```
+POST /api/v1/pending-policies/:id/activate
+```
+
+Query Parameters:
+- `userId` (required): ID of the user
+
+Request Body:
+```json
+{
+  "beneficiaryEmail": "john.doe@example.com"
+}
+```
+
+Response:
+```json
+{
+    "message": "Pending policy activated successfully",
+    "result": {
+        "id": 4,
+        "createdAt": "2025-06-08T17:00:12.089Z",
+        "updatedAt": "2025-06-08T17:00:12.089Z",
+        "beneficiaryEmail": "john.doe@example.com",
+        "product": {
+            "id": 13,
+            "createdAt": "2025-06-08T16:47:13.242Z",
+            "updatedAt": "2025-06-08T16:47:13.242Z",
+            "category": "health",
+            "name": "Optimal care mini",
+            "price": 1000000,
+            "description": "",
+            "currency": "NGN"
+        },
+        "user": {
+            "id": 5,
+            "createdAt": "2025-06-08T16:47:13.225Z",
+            "updatedAt": "2025-06-08T16:56:29.902Z",
+            "email": "john.doe@example.com",
+            "firstName": "John",
+            "lastName": "Doe",
+            "wallet": 0
+        },
+        "pendingPolicy": {
+            "id": 7,
+            "createdAt": "2025-06-08T16:56:29.902Z",
+            "updatedAt": "2025-06-08T17:00:12.089Z",
+            "status": "used"
+        }
+    }
+}
+```
+
+### Policies API
+
+#### List all activated policies
+
+```
+GET /api/v1/policies
+```
+
+Query Parameters:
+- `userId` (required): ID of the user
+- `beneficiaryEmail` (optional | Boolean): Filter by beneficiary email
+- `mine` (optional | Boolean): Filter by user that created the policy
+
+Response:
+```json
+{
+    "message": "Policies fetched successfully",
+    "policies": [
+        {
+            "id": 4,
+            "createdAt": "2025-06-08T17:00:12.089Z",
+            "updatedAt": "2025-06-08T17:00:12.089Z",
+            "beneficiaryEmail": "john.doe@example.com",
+            "product": {
+                "id": 1,
+                "createdAt": "2025-06-08T16:47:13.242Z",
+                "updatedAt": "2025-06-08T16:47:13.242Z",
+                "category": "health",
+                "name": "Optimal care mini",
+                "price": 1000000,
+                "description": "",
+                "currency": "NGN"
+            },
+            "user": {
+                "id": 1,
+                "createdAt": "2025-06-08T16:47:13.225Z",
+                "updatedAt": "2025-06-08T16:56:29.902Z",
+                "email": "john.doe@example.com",
+                "firstName": "John",
+                "lastName": "Doe",
+                "wallet": 0
+            }
+        }
+    ]
+}
+```
+
+#### Get details of a specific policy
+
+```
+GET /api/v1/policies/:id
+```
+
+Query Parameters:
+- `userId` (required): ID of the user
+
+Response:
+```json
+{
+  "message": "Policy fetched successfully",
+  "policy": {
+    "id": 1,
+    "startDate": "2023-08-01T00:00:00.000Z",
+    "endDate": "2024-08-01T00:00:00.000Z", 
+    "planId": 1,
+    "pendingPolicyId": 1,
+    "userId": 1,
+    "createdAt": "2023-08-01T10:00:00.000Z",
+    "updatedAt": "2023-08-01T10:00:00.000Z"
+  }
+}
+```
+
+## Additional Information
+
+### Business Rules
+
+1. The wallet is deducted based on the product price × quantity when purchasing a plan.
+2. One beneficiary can have only one policy per product.
+3. The API follows a workflow where:
+   - User purchases a plan
+   - A pending policy is automatically created
+   - User activates the pending policy to create an active policy
+
+### Relationship Flow
+
+1. **User** purchases a **Product** by creating a **Plan**
+2. A **Plan** automatically creates a **Pending Policy**
+3. User activates a **Pending Policy** to create an **Policy**
+
+All monetary values in the API are stored in Kobo (100 Kobo = 1 Naira) for precision, but are displayed in Naira in the API responses.
