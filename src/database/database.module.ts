@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { SeedService } from './seeders/user.seeder';
+import { UserSeederService } from './seeders/user.seeder';
+import { ProductSeederService } from './seeders/product.seeder';
 import { UserModule } from '../user/user.module';
+import { ProductModule } from '../product/product.module';
 
 @Module({
   imports: [
@@ -20,8 +22,9 @@ import { UserModule } from '../user/user.module';
       inject: [ConfigService],
     }),
     UserModule,
+    ProductModule,
   ],
-  providers: [SeedService],
-  exports: [SeedService],
+  providers: [UserSeederService, ProductSeederService],
+  exports: [UserSeederService, ProductSeederService],
 })
 export class DatabaseModule {}

@@ -16,8 +16,11 @@ export class PolicyService {
     private readonly policyRepository: Repository<Policy>,
     private readonly userService: UserService,
   ) {}
-  async findPolicyById(id: number) {
-    const policy = await this.policyRepository.findOne({ where: { id } });
+  async findPolicyById(id: number, relations: string[] = []) {
+    const policy = await this.policyRepository.findOne({
+      where: { id },
+      relations,
+    });
 
     if (!policy) {
       throw new NotFoundException('Policy does not exist');
@@ -30,9 +33,9 @@ export class PolicyService {
     const { userId } = filterPolicyDto;
     const user = await this.userService.findUserById(userId);
 
-    const policy = await this.findPolicyById(id);
+    const policy = await this.findPolicyById(id, ['user']);
 
-    if (user.id != policy.user.id || user.email != policy.beneficiaryEmail) {
+    if (user.id != policy.user.id && user.email != policy.beneficiaryEmail) {
       throw new BadRequestException('Policy does not belong to user');
     }
 
