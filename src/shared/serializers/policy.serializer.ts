@@ -12,9 +12,9 @@ export class SerializedPolicy {
   updatedAt: Date;
 
   @Expose()
-  benefactoryEmail: string;
+  beneficiaryEmail: string;
 
-  @Transform(({ obj }) => obj.plan.product)
+  @Transform(({ obj }) => obj.product || (obj.plan && obj.plan.product))
   @Expose()
   product: SerializedProduct;
 }
