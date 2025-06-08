@@ -26,13 +26,14 @@ export class PlanService {
     private readonly userService: UserService,
     private readonly datasource: DataSource,
   ) {}
-  async create(createPlanDto: CreatePlanDto) {
-    const { email, productId, quantity } = createPlanDto;
+  async create(createPlanDto: CreatePlanDto, filterPlanDto: PlanDto) {
+    const { productId, quantity } = createPlanDto;
+    const { userId } = filterPlanDto;
 
     try {
       const plan = await this.datasource.transaction(async (manager) => {
         const user = await manager.findOne(User, {
-          where: { email },
+          where: { id: userId },
           lock: { mode: 'pessimistic_write' },
         });
 

@@ -27,8 +27,11 @@ export class PlanController {
   ) {}
 
   @Post()
-  async createPlan(@Body() createPlanDto: CreatePlanDto) {
-    const plan = await this.planService.create(createPlanDto);
+  async createPlan(
+    @Body() createPlanDto: CreatePlanDto,
+    @Query() filterPlanDto: PlanDto,
+  ) {
+    const plan = await this.planService.create(createPlanDto, filterPlanDto);
 
     return {
       message: 'Plan created successfully',
